@@ -1,0 +1,82 @@
+# This workflow will install Python dependencies and run tests with a variety of Python versions
+
+name: Integration tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  bootcamp-test:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.1.0
+        with:
+          redis-version: 5
+      - name: Clone bootcamp
+        run: |
+          git clone https://github.com/vitorfs/bootcamp ../bootcamp
+      - name: Install dependencies
+        run: |
+          pip install -r ../bootcamp/requirements/local.txt
+          pip install -q -e .
+      - name: Prepare bootcamp
+        run: |
+          cat .github/workflows/bootcamp/test-settings.py >> ../bootcamp/config/settings/test.py
+          cp ../bootcamp/.env.example ../bootcamp/.env
+          python ../bootcamp/manage.py migrate --settings config.settings.test
+      - name: Run tests
+        run: |
+          python ../bootcamp/manage.py seed news --settings config.settings.test
+          python ../bootcamp/manage.py seed articles --settings config.settings.test
+          python ../bootcamp/manage.py seed messager --settings config.settings.test
+          python ../bootcamp/manage.py seed users --settings config.settings.test
+          python ../bootcamp/manage.py seed notifications --settings config.settings.test
+          python ../bootcamp/manage.py seed qa --settings config.settings.test
+
+  django-crm-test:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Clone Django-CRM
+        run: |
+          git clone https://github.com/MicroPyramid/Django-CRM ../django-crm
+      - name: Install dependencies
+        run: |
+          pip install -r ../django-crm/requirements.txt
+          pip install -q -e .
+      - name: Prepare Django-CRM
+        run: |
+          cat .github/workflows/django-crm/test-settings.py >> ../django-crm/crm/settings.py
+          python ../django-crm/manage.py migrate
+      - name: Run tests
+        run: |
+          # Some tests need to be fixed
+          # python ../django-crm/manage.py seed accounts
+          # python ../django-crm/manage.py seed cases
+          python ../django-crm/manage.py seed common
+          python ../django-crm/manage.py seed contacts
+          python ../django-crm/manage.py seed emails
+          python ../django-crm/manage.py seed events
+          # python ../django-crm/manage.py seed invoices
+          # python ../django-crm/manage.py seed leads
+          # python ../django-crm/manage.py seed opportunity
+          python ../django-crm/manage.py seed planner
+          # python ../django-crm/manage.py seed tasks
+          python ../django-crm/manage.py seed teams
