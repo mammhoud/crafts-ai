@@ -87,7 +87,7 @@ class PBTExecutor:
     ) -> TestResult:
         """Execute a Hypothesis-based test."""
         try:
-            from hypothesis import given, settings, HealthCheck
+            from hypothesis import HealthCheck, given, settings
 
             # Configure Hypothesis
             @settings(
