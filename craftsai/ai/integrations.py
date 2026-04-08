@@ -1,5 +1,5 @@
 """
-AI integrations for nawaai — pure Python, no Django required.
+AI integrations for craftsai — pure Python, no Django required.
 
 Provides base class and implementations for AI service integrations.
 API keys are read from environment variables.

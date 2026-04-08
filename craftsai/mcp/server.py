@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 class MCPServer:
     """Minimal MCP server wrapper."""
-    def __init__(self, name: str = "nawaai-mcp", version: str = "1.0.0"):
+    def __init__(self, name: str = "craftsai-mcp", version: str = "1.0.0"):
         self.name = name
         self.version = version
         self._tools = {}
