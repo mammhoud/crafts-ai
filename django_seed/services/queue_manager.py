@@ -109,16 +109,32 @@ class EmailQueueManager:
 
     def _queue_with_celery(self, log, recipient, subject, template_name, context):
         """Queue email using Celery."""
-        from django_seed.tasks import send_email_task
+        try:
+            from django_seed.tasks import send_email_task
 
-        result = send_email_task.delay(
-            log.id,
-            recipient,
-            subject,
-            template_name,
-            context
-        )
-        return result.id
+            # Check if send_email_task is a Celery task (has .delay method)
+            if hasattr(send_email_task, 'delay'):
+                result = send_email_task.delay(
+                    log.id,
+                    recipient,
+                    subject,
+                    template_name,
+                    context
+                )
+                return result.id
+            else:
+                # Celery not properly configured, fall back to immediate sending
+                logger.warning("Celery task not properly decorated, sending immediately")
+                from .email_service import EmailService
+                email_service = EmailService()
+                email_service._send_now(recipient, subject, template_name, context, log)
+                return f"immediate-{log.id}"
+        except Exception as e:
+            logger.warning(f"Celery queuing failed: {e}, sending immediately")
+            from .email_service import EmailService
+            email_service = EmailService()
+            email_service._send_now(recipient, subject, template_name, context, log)
+            return f"immediate-{log.id}"
 
     def retry_failed_email(self, log_id: int) -> bool:
         """

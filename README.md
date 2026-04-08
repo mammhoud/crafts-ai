@@ -1,223 +1,94 @@
-# Django Seed - Enhanced Edition
+# django-seed
 
-Django Seed is an enhanced Django package that combines:
+This package contains two things: **nawaai** (new standalone AI toolkit) and **django_seed** (deprecated shim).
 
-1. **Spec Task Orchestrator** - Comprehensive spec management and task execution system
-2. **MCP Designer** - Model Context Protocol integration for AI-assisted development
-3. **Django Components** - Reusable Wagtail/Django components
+---
 
-## Features
+## nawaai — Standalone AI/MCP Toolkit
 
-### 🎯 Spec Task Orchestrator
-- Discover and index spec directories
-- Parse requirements, design, and task files
-- Track tasks by category and status
-- Execute tasks with multiple handlers
-- Property-based testing support
-- Comprehensive error handling
-- Progress tracking and reporting
+nawaai is a pure Python AI/MCP toolkit. No Django required. It is bundled inside the `django-seed` package.
 
-### 🤖 MCP Designer
-- AI-safe template and style editing
-- Live preview generation
-- Component style updates
-- File patching with SEARCH/REPLACE
-- Webhook support for CI/CD integration
-
-### 🧩 Django Components
-- Pre-built Wagtail StreamField blocks
-- Template tag integration
-- Asset manifest management
-- Reusable component system
-
-## Installation
-
-### Using uv (Recommended)
+### Install
 
 ```bash
-uv pip install django-seed
+pip install django-seed                    # includes nawaai
+pip install django-seed[openai]            # + openai>=1.0
+pip install django-seed[anthropic]         # + anthropic>=0.3
+pip install django-seed[mcp]               # + mcp
 ```
 
-### Using pip
-
-```bash
-pip install django-seed
-```
-
-## Quick Start
-
-### 1. Add to Django Settings
+### AI Integrations
 
 ```python
-INSTALLED_APPS = [
-    # ...
-    "django_seed.orchestrator",
-    "django_seed.mcp_designer",
-    "django_seed.comp",
-    # ...
-]
+from nawaai.ai.integrations import AIIntegrationRegistry, OpenAIIntegration
+
+# API keys from environment (OPENAI_API_KEY, ANTHROPIC_API_KEY)
+ai = AIIntegrationRegistry.get("openai")
+response = ai.generate("Explain MCP in one sentence")
+
+# Or pass key directly
+ai = AIIntegrationRegistry.get("claude", api_key="sk-ant-...")
+for chunk in ai.stream("Write a haiku"):
+    print(chunk, end="")
 ```
 
-### 2. Use the Orchestrator
+### MCP Server
 
 ```python
-from django_seed.orchestrator import SpecTaskOrchestrator
+from nawaai.mcp.server import MCPServer
 
-orchestrator = SpecTaskOrchestrator()
-result = orchestrator.load_specs()
-print(f"Loaded {result['loaded']} specs")
+server = MCPServer(name="my-tools", version="1.0.0")
 
-# Get tasks by category
-tasks = orchestrator.get_tasks_by_category("auth")
+@server.tool("summarize")
+def summarize(text: str) -> str:
+    return text[:100] + "..."
 
-# Execute a task
-result = orchestrator.execute_task("task-id")
-
-# Get progress
-progress = orchestrator.get_spec_progress("auth", "spec-name")
+print(server.list_tools())  # ["summarize"]
+server.run(host="localhost", port=8765)
 ```
 
-### 3. Start MCP Server
-
-```bash
-mcp-django-server
-```
-
-### 4. Use CLI
-
-```bash
-orchestrator scan
-orchestrator load
-orchestrator list --category auth
-orchestrator progress --category auth --spec spec-name
-```
-
-## Configuration
-
-### Environment Variables
-
-```bash
-export ORCHESTRATOR_BASE_PATH=".kiro/specs-organized"
-export ORCHESTRATOR_PBT_FRAMEWORK="hypothesis"
-export ORCHESTRATOR_PBT_ITERATIONS="100"
-export MCP_CREATE_BACKUPS="true"
-export MCP_WEBHOOK_URL="https://example.com/webhook"
-```
-
-### Django Settings
+### Seeder (Faker-based)
 
 ```python
-# Orchestrator settings
-ORCHESTRATOR_BASE_PATH = ".kiro/specs-organized"
-ORCHESTRATOR_PBT_FRAMEWORK = "hypothesis"
-ORCHESTRATOR_PBT_ITERATIONS = 100
-
-# MCP Designer settings
-MCP_CREATE_BACKUPS = True
-MCP_WEBHOOK_URL = None
-MCP_TEMPLATE_EXTENSIONS = [".html"]
-MCP_STYLE_EXTENSIONS = [".css", ".scss"]
-MCP_EXTRA_TEMPLATE_DIRS = []
-MCP_EXTRA_STATIC_DIRS = []
+# Note: nawaai.seeder re-exports from django_rseal.seeder (Django required)
+# For standalone use without Django, use Faker directly:
+from faker import Faker
+fake = Faker()
+print(fake.name(), fake.email())
 ```
 
-## Architecture
-
-```
-django-seed/
-├── orchestrator/          # Spec Task Orchestrator
-│   ├── models.py         # Data models
-│   ├── scanner.py        # Spec discovery
-│   ├── parser.py         # File parsing
-│   ├── tracker.py        # Task tracking
-│   ├── executor.py       # Task execution
-│   ├── pbt.py           # Property-based testing
-│   ├── progress.py      # Progress tracking
-│   ├── filter.py        # Task filtering
-│   ├── errors.py        # Error handling
-│   ├── config.py        # Configuration
-│   ├── compatibility.py # Backward compatibility
-│   ├── orchestrator.py  # Main orchestrator
-│   └── cli.py          # CLI interface
-├── mcp_designer/         # MCP Designer
-│   ├── mcp_server.py    # MCP server
-│   ├── utils.py         # Utilities
-│   ├── signals.py       # Django signals
-│   └── management/      # Django management commands
-├── comp/                 # Components
-│   ├── blocks.py        # Wagtail blocks
-│   └── tags.py          # Template tags
-└── contrib/             # Utilities
-    ├── conf.py          # Configuration
-    └── helpers.py       # Helper functions
-```
-
-## Testing
-
-### Run Tests
+### Orchestrator (Spec Task Engine)
 
 ```bash
-# Using pytest
-pytest tests/
-
-# Using uv
-uv run pytest tests/
-
-# With coverage
-pytest tests/ --cov=django_seed
+# CLI entry point
+nawaai scan
+nawaai load
+nawaai list --category auth
+nawaai tasks --status not_started
+nawaai progress --category auth --spec my-spec
+nawaai export --output specs.json
 ```
 
-### Run Property-Based Tests
+```python
+from nawaai.orchestrator import SpecTaskOrchestrator
 
-```bash
-pytest tests/test_properties.py -v
+orch = SpecTaskOrchestrator()
+orch.load_specs(".kiro/specs")
+summary = orch.get_overall_summary()
 ```
 
-## Development
+---
 
-### Setup Development Environment
+## django_seed — Deprecated Shim
 
-```bash
-# Clone the repository
-git clone https://github.com/mammhoud/django-seed.git
-cd django-seed
+> **Deprecated.** The seeding functionality has moved to `django_rseal.seeder`. Use that directly in new code.
 
-# Install with uv
-uv sync
+```python
+# Old (deprecated)
+from django_seed import Seed
 
-# Run tests
-uv run pytest tests/
+# New
+from django_rseal.seeder import Seeder
 ```
 
-### Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## Documentation
-
-- [Orchestrator Guide](docs/orchestrator.md)
-- [MCP Designer Guide](docs/mcp_designer.md)
-- [Component Guide](docs/components.md)
-- [API Reference](docs/api.md)
-
-## License
-
-MIT License - See LICENSE file for details
-
-## Support
-
-- GitHub Issues: https://github.com/mammhoud/django-seed/issues
-- Documentation: https://django-seed.readthedocs.io
-- Email: support@example.com
-
-## Changelog
-
-### Version 1.0.0 (2024)
-- Initial release with Spec Task Orchestrator
-- MCP Designer integration
-- Full test coverage
-- Comprehensive documentation
+The `django_seed` package in this repo is a compatibility shim that re-exports from `django_rseal.seeder`. It will be removed in a future version.
