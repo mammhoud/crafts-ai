@@ -3,35 +3,28 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "django-seed"
-version = "1.1.0"
-description = "Enhanced Django Seed with Spec Task Orchestrator and MCP Designer (merged with upstream)"
+name = "craftsai"
+version = "0.1.0"
+description = "Standalone AI/MCP toolkit — no Django required"
 readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Framework :: Django",
-    "Framework :: Wagtail",
 ]
 dependencies = [
-    "Django>=1.11",
     "Faker>=0.7.7",
     "toposort>=1.5",
     "hypothesis>=6.0",
-    "pytest>=7.0",
-    "django-rseal",
 ]
 
 [project.optional-dependencies]
 openai = ["openai>=1.0"]
 anthropic = ["anthropic>=0.3"]
 mcp = ["mcp"]
+dev = ["pytest>=7.0", "hypothesis>=6.0"]
 
 [project.scripts]
-django-seed = "django_seed.cli:main"
-mcp-django-server = "django_seed.mcp_designer.mcp_server:main"
-orchestrator = "django_seed.orchestrator.cli:main"
-nawaai = "nawaai.orchestrator.cli:main"
+craftsai = "craftsai.orchestrator.cli:main"
 
 [project.urls]
 "Homepage" = "https://github.com/mammhoud/django-seed"
@@ -42,18 +35,15 @@ package-dir = {"" = "."}
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["django_seed*", "nawaai*"]
-
-[tool.uv.sources]
-django-rseal = { workspace = true }
+include = ["craftsai*", "django_seed*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
-addopts = "-v --tb=short --cov=django_seed"
+addopts = "-v --tb=short"
 
 [tool.coverage.run]
-source = ["django_seed"]
+source = ["craftsai"]
 omit = ["*/tests/*", "*/migrations/*"]
 
 [tool.coverage.report]

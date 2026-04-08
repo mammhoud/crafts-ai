@@ -1,3 +1,5 @@
+# ruff: noqa: E402
+"""django_seed.models — shim pointing to django_rseal.email.models."""
 import warnings
 
 warnings.warn(

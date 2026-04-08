@@ -1,3 +1,5 @@
+# ruff: noqa: E402
+"""django_seed.tasks — shim pointing to django_rseal.tasks.django_q."""
 import warnings
 
 warnings.warn(

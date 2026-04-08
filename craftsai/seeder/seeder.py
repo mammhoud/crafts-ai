@@ -4,8 +4,8 @@ import random
 from django.db import transaction
 from django.db.models import ForeignKey, ManyToManyField, OneToOneField
 from django.db.utils import IntegrityError
-from nawaai.seeder.exceptions import SeederException
-from nawaai.seeder.guessers import FieldTypeGuesser, NameGuesser
+from craftsai.seeder.exceptions import SeederException
+from craftsai.seeder.guessers import FieldTypeGuesser, NameGuesser
 
 
 class ModelSeeder(object):
