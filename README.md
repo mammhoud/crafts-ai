@@ -1,54 +1,147 @@
-# craftsai
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/cover.png">
+  <img src="assets/cover.png" alt="nawaai Cover" width="100%">
+</picture>
 
-Standalone AI/MCP toolkit — **no Django required**.
+# 🐍 nawaai
 
-## Install
+<p align="center">
+  <em>Pure Python AI/MCP Toolkit — ai, chat, mcp, orchestrator, seeder</em>
+</p>
+
+<p align="center">
+  <a href="https://pypi.org/project/nawaai/">
+    <img src="https://img.shields.io/pypi/v/nawaai?style=flat-square&logo=pypi&logoColor=white&label=PyPI" alt="PyPI version">
+  </a>
+  <a href="https://python.org">
+    <img src="https://img.shields.io/pypi/pyversions/nawaai?style=flat-square&logo=python&logoColor=white" alt="Python versions">
+  </a>
+  <a href="https://github.com/astral-sh/uv">
+    <img src="https://img.shields.io/badge/uv-package%20manager-de3d8b?style=flat-square&logo=uv&logoColor=white" alt="uv">
+  </a>
+  <a href="https://github.com/psf/black">
+    <img src="https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square" alt="Code style: black">
+  </a>
+</p>
+
+---
+
+## ✨ Features
+
+- 🤖 **AI Integrations** – OpenAI, Claude, and more
+- 💬 **Chat Clients** – REST and Rasa integrations
+- 🔌 **MCP Server** – Model Context Protocol support
+- 📋 **Spec Orchestrator** – Task execution engine
+- 🔒 **Zero Django** – Pure Python, no Django dependencies
+- 📦 **`uv`‑ready** – Lightning-fast dependency management
+
+---
+
+## 📦 Installation
 
 ```bash
-pip install craftsai
-pip install craftsai[openai]    # + OpenAI
-pip install craftsai[anthropic] # + Anthropic Claude
-pip install craftsai[mcp]       # + MCP server
+# Install with uv (recommended)
+uv add nawaai
+
+# Or with pip
+pip install nawaai
 ```
 
-## Sub-packages
+Optional dependencies:
 
-| Package | Description |
-|---------|-------------|
-| `craftsai.ai` | OpenAI, Claude, and generic AI integrations |
-| `craftsai.mcp` | Model Context Protocol server utilities |
-| `craftsai.seeder` | Faker-based data seeding (framework-agnostic) |
-| `craftsai.orchestrator` | Spec task orchestration engine |
+```bash
+uv add "nawaai[openai,anthropic]" --dev
+uv add "nawaai[faker]" --dev
+uv add "nawaai[mcp]" --dev
+uv add "nawaai[all]" --dev
+```
 
-## Quick Usage
+---
+
+## 🏁 Quickstart
 
 ```python
 # AI integrations
-from craftsai.ai.integrations import AIIntegrationRegistry
-ai = AIIntegrationRegistry.get("openai", api_key="sk-...")
-response = ai.generate("Summarize this article: ...")
+from crafts_ai.ai.integrations import OpenAIIntegration
 
-# MCP server
-from craftsai.mcp.server import MCPServer
-server = MCPServer(name="my-tools")
+ai = OpenAIIntegration(api_key="...")
+response = ai.generate("Summarize this text: ...")
 
-@server.tool("search")
-def search(query: str) -> list:
-    return []  # your implementation
+# Chat client
+from crafts_ai.chat.client import CraftsClient, ChatBubble
 
-# Seeder
-from faker import Faker
-from craftsai.seeder import Seeder
-seeder = Seeder(Faker())
-seeder.add_entity(MyModel, 10)
-seeder.execute()
+client = CraftsClient(base_url="http://localhost:8765")
+bubble = ChatBubble(client=client)
+reply = bubble.send("Hello, how are you?", session_id="user123")
 
-# Orchestrator CLI
-craftsai --help
+# Spec orchestrator CLI
+# craftsai scan
+# craftsai list
+# craftsai execute --task-id 1
 ```
 
-## django_seed (deprecated)
+---
 
-The `django_seed` package in this repo is a deprecated shim. Use:
-- `craftsai` for standalone AI/MCP/seeding
-- `django_rseal` for Django-integrated automation
+## 📖 Documentation
+
+- [Getting Started](docs/getting-started/)
+- [API Reference](docs/api/)
+- [CLI Commands](docs/cli/)
+
+---
+
+## 🧪 Development Setup (with `uv`)
+
+```bash
+# Install the package
+uv add nawaai
+
+# Or with pip
+pip install nawaai
+
+# Install with all extras for development
+uv add "nawaai[all]" --dev
+
+# Run tests
+uv run pytest
+
+# Run linting and formatting
+uv run ruff check .
+uv run ruff format .
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/amazing-feature`).
+3. Commit your changes (`git commit -m 'Add some amazing feature'`).
+4. Push to the branch (`git push origin feature/amazing-feature`).
+5. Open a Pull Request.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙌 Acknowledgements
+
+- Built with ❤️ and [`uv`](https://docs.astral.sh/uv/)
+- Badges from [Shields.io](https://shields.io)
+- AI powered by [OpenAI](https://openai.com/) and [Anthropic](https://anthropic.com/)
+
+---
+
+## ☕ Support
+
+If you find this project helpful, consider buying me a coffee!
+
+<a href="https://buymeacoffee.com/mammhoud" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50">
+</a>

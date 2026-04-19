@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "craftsai"
+name = "nawaai"
 version = "0.1.0"
 description = "Standalone AI/MCP toolkit — no Django required"
 readme = "README.md"
@@ -12,30 +12,31 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
-    "Faker>=0.7.7",
-    "toposort>=1.5",
-    "hypothesis>=6.0",
+    "hypothesis>=6.151.6",
 ]
 
 [project.optional-dependencies]
+faker = ["Faker>=0.7.7"]
 openai = ["openai>=1.0"]
 anthropic = ["anthropic>=0.3"]
 mcp = ["mcp"]
-dev = ["pytest>=7.0", "hypothesis>=6.0"]
+rasa = ["requests>=2.28"]
+rseal = ["django-rseal"]
+dev = ["pytest>=7.0", "hypothesis>=6.151.6", "Faker>=0.7.7"]
 
 [project.scripts]
-craftsai = "craftsai.orchestrator.cli:main"
+craftsai = "crafts_ai.orchestrator.cli:main"
 
 [project.urls]
-"Homepage" = "https://github.com/mammhoud/django-seed"
-"Repository" = "https://github.com/mammhoud/django-seed"
+"Homepage" = "https://github.com/mammhoud/nawaai"
+"Repository" = "https://github.com/mammhoud/nawaai"
 
 [tool.setuptools]
 package-dir = {"" = "."}
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["craftsai*", "django_seed*"]
+include = ["crafts_ai*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
