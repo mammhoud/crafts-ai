@@ -130,6 +130,35 @@ This project is licensed under the **MIT License** – see the [LICENSE](LICENSE
 
 ---
 
+## 🛠️ Built With
+
+A heartfelt thank you to the tools and AI assistants that made developing this package a joy.
+
+<p align="center">
+  <a href="https://kiro.dev" title="Kiro – AI-powered dev environment">
+    <img src="https://img.shields.io/badge/Kiro-AI%20Dev%20Environment-6C63FF?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyTDIgN2wxMCA1IDEwLTV6TTIgMTdsOCA0IDgtNE0yIDEybDggNCA4LTQiLz48L3N2Zz4=" alt="Kiro">
+  </a>
+  &nbsp;
+  <a href="https://claude.ai" title="Claude by Anthropic">
+    <img src="https://img.shields.io/badge/Claude-Anthropic%20AI-D97757?style=for-the-badge&logo=anthropic&logoColor=white" alt="Claude">
+  </a>
+  &nbsp;
+  <a href="https://aws.amazon.com" title="Amazon Web Services">
+    <img src="https://img.shields.io/badge/AWS-Amazon%20Web%20Services-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white" alt="AWS">
+  </a>
+  &nbsp;
+  <a href="https://www.hostinger.com" title="Hostinger – Web Hosting">
+    <img src="https://img.shields.io/badge/Hostinger-Web%20Hosting-673DE6?style=for-the-badge&logo=hostinger&logoColor=white" alt="Hostinger">
+  </a>
+</p>
+
+> 🤖 **Kiro** — the AI-powered development environment that kept the workflow smooth and the context sharp.
+> 🧠 **Claude** — Anthropic's AI assistant that helped reason through architecture, write docs, and debug with clarity.
+> ☁️ **AWS** — the cloud backbone powering the infrastructure this package runs on.
+> 🌐 **Hostinger** — reliable and affordable hosting that keeps everything running fast and online.
+
+---
+
 ## 🙌 Acknowledgements
 
 - Built with ❤️ and [`uv`](https://docs.astral.sh/uv/)

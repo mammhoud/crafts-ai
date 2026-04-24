@@ -1,8 +1,8 @@
 import codecs
 import os
 import re
-from setuptools import setup
 
+from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,8 +26,8 @@ def find_version(*file_paths):
 
 
 setup(
-    name='django-seed',
-    version=find_version('django_seed', '__init__.py'),
+    name='nawaai',
+    version=find_version('crafts_ai', '__init__.py'),
     author='Tobin Brown',
     author_email='tobinjbrown@gmail.com',
     packages=['django_seed', 'django_seed.management',

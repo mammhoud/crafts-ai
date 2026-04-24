@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nawaai"
-version = "0.1.0"
+version = "0.2.0"
 description = "Standalone AI/MCP toolkit — no Django required"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -28,8 +28,8 @@ dev = ["pytest>=7.0", "hypothesis>=6.151.6", "Faker>=0.7.7"]
 craftsai = "crafts_ai.orchestrator.cli:main"
 
 [project.urls]
-"Homepage" = "https://github.com/mammhoud/nawaai"
-"Repository" = "https://github.com/mammhoud/nawaai"
+"Homepage" = "https://github.com/mammhoud/crafts-ai"
+"Repository" = "https://github.com/mammhoud/crafts-ai"
 
 [tool.setuptools]
 package-dir = {"" = "."}
